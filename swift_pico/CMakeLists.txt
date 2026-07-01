@@ -43,6 +43,7 @@ install(PROGRAMS
   scripts/task1a.cpp
   scripts/task1a.py
   src/pico_controller_PID.py
+  src/controller.py
   src/pico_controller_LQR.py
   src/pico_controller_PID.cpp
   src/pico_controller_LQR.cpp
