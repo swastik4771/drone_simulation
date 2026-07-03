@@ -16,19 +16,18 @@ The challenge will be divided into two phases:
 
 # My Contribution
 
-This repository contains my work for the eYRC 2025–26 Krishi Drone Theme.
+This repository contains my work and learning during the eYRC 2025–26 Krishi Drone Theme simulation phase. The original project structure was provided by the eYRC organizers, while the controller development, debugging, experimentation, and project modifications documented here reflect my contributions.
 
-## My Contributions
-- Worked with ROS 2 and Gazebo Sim.
-- Developed and debugged the drone controller.
-- Explored PID-based flight control.
+- Worked on drone simulation using ROS 2 and Gazebo Simulator.
+- Modified, tested & debugged the drone controller.
+- Explored PID-based flight control algorithm.
 - Used Linux for robotics development.
 - Managed the project using Git and GitHub.
 
 ## Technologies
-- Python
+- Python (Programming Language)
 - ROS 2
-- Gazebo Sim
+- Gazebo Simulator
 - Linux
 - Git
 - GitHub
