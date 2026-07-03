@@ -13,3 +13,22 @@ The challenge will be divided into two phases:
 - Arun P Madhu
 - Shakthi Magender
 - Joel Siby
+
+# My Contribution
+
+This repository contains my work for the eYRC 2025–26 Krishi Drone Theme.
+
+## My Contributions
+- Worked with ROS 2 and Gazebo Sim.
+- Developed and debugged the drone controller.
+- Explored PID-based flight control.
+- Used Linux for robotics development.
+- Managed the project using Git and GitHub.
+
+## Technologies
+- Python
+- ROS 2
+- Gazebo Sim
+- Linux
+- Git
+- GitHub
