@@ -19,19 +19,21 @@ class Swift_Pico(Node):
         self.cmd.rc_pitch    = 1500
         self.cmd.rc_yaw      = 1500
         self.cmd.rc_throttle = 1500
+     
+        self.hover_throttle = 1550 
 
-        self.Kp = [4.0, 4.0, 6.0]
-        self.Ki = [0.0, 0.0, 0.0]
-        self.Kd = [20.0, 20.0, 15]
+        self.Kp = [4.0, 4.0, 4.0]
+        self.Ki = [0.0, 0.0, 0.2]
+        self.Kd = [20.0, 20.0, 8.0]
 
         self.error      = [0.0, 0.0, 0.0]
         self.prev_error = [0.0, 0.0, 0.0]
         self.error_sum  = [0.0, 0.0, 0.0]
         self.prev_deriv = [0.0, 0.0, 0.0]
 
-        self.d_alpha = 0.50
-        self.i_limit = [15.0, 15.0, 25.0]
-        self.out_max = [120.0, 120.0, 140.0]
+        self.d_alpha = 0.65
+        self.i_limit = [15.0, 15.0, 10.0]
+        self.out_max = [120.0, 120.0, 250.0]
 
         self.rc_min = [1000, 1000, 1000]
         self.rc_max = [2000, 2000, 2000]
@@ -90,7 +92,7 @@ class Swift_Pico(Node):
         dt = (current_time - self.last_time).nanoseconds / 1e9
         self.last_time = current_time
 
-       
+        # Safeguard burst frequencies
         if dt <= 0.01:
             return
 
@@ -119,8 +121,15 @@ class Swift_Pico(Node):
         
         for i in range(3):
             self.error[i] = self.current_state[i] - self.desired_state[i]
+            
+            if i == 2:
+                self.error[i] = -self.error[i]
+
+            if i == 2 and abs(self.error[i]) < 0.3:
+                self.error[i] = 0.0
 
             self.error_sum[i] += self.error[i] * dt
+            self.error_sum[i] *= 0.98  
             self.error_sum[i] = max(min(self.error_sum[i], self.i_limit[i]), -self.i_limit[i])
 
             raw_d = (self.error[i] - self.prev_error[i]) / dt
@@ -141,7 +150,7 @@ class Swift_Pico(Node):
 
             self.prev_error[i] = self.error[i]
 
-        self.cmd.rc_throttle = int(1550 + outputs[2])
+        self.cmd.rc_throttle = int(self.hover_throttle + outputs[2])
         self.cmd.rc_roll     = int(1500 - outputs[0])
         self.cmd.rc_pitch    = int(1500 + outputs[1])
         self.cmd.rc_yaw      = 1500
@@ -158,7 +167,7 @@ class Swift_Pico(Node):
         self.pos_error.yaw_error      = 0.0
         self.pos_error_pub.publish(self.pos_error)
 
-   
+        # 🔒 Safe division fallback conversion
         calculated_fps = 1.0 / dt if dt > 0.0 else 0.0
 
         print(
